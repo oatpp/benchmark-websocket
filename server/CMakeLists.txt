@@ -19,6 +19,7 @@ ExternalProject_Add(oatpp-websocket
         GIT_REPOSITORY "https://github.com/oatpp/oatpp-websocket.git"
         GIT_TAG origin/master
         CMAKE_ARGS -DOATPP_BUILD_TESTS=OFF
+        DEPENDS oatpp
 )
 
 ExternalProject_Add(main

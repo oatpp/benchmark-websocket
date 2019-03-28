@@ -40,6 +40,7 @@ public:
   OATPP_CREATE_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ClientConnectionProvider>>>, connectionProviders)([this] {
     auto providers = std::make_shared<std::list<std::shared_ptr<oatpp::network::ClientConnectionProvider>>>();
     const char* host = m_cmdArgs.getNamedArgumentValue("-h", "127.0.0.1");
+    OATPP_LOGD("host", "'%s'", host);
     v_int32 basePort = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("-p", "8000"));
     v_int32 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--ports-count", "100"));
     for(v_int32 i = 0; i < portsCount; i++) {

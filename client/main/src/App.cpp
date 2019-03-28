@@ -47,7 +47,7 @@ void run(const oatpp::base::CommandLineArguments& args) {
 
   std::list<std::thread> threads;
 
-  v_int32 maxSocketsNumber = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-max", "100000"));
+  v_int32 maxSocketsNumber = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-max", "100"));
   v_int32 maxSocketsPerPort = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-port", "10000"));
   v_int32 sleepIteration = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("-s", "5"));
 

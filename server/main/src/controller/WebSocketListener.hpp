@@ -22,7 +22,7 @@ public:
                         const oatpp::String& message) override
   {
     ++ FRAMES;
-    return socket->sendPongAsync(parentCoroutine, actionOnReturn, message);
+    return socket->sendPongAsync(parentCoroutine, std::forward<Action>(actionOnReturn), message);
   }
 
   virtual Action onPong(oatpp::async::AbstractCoroutine* parentCoroutine,
@@ -31,7 +31,7 @@ public:
                         const oatpp::String& message) override
   {
     ++ FRAMES;
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
   virtual Action onClose(oatpp::async::AbstractCoroutine* parentCoroutine,
@@ -40,7 +40,7 @@ public:
                          v_word16 code, const oatpp::String& message) override
   {
     ++ FRAMES;
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
   virtual Action readMessage(oatpp::async::AbstractCoroutine* parentCoroutine,
@@ -52,12 +52,12 @@ public:
       auto wholeMessage = m_messageBuffer.toString();
       m_messageBuffer.clear();
       ++ MESSAGES;
-      return socket->sendOneFrameTextAsync(parentCoroutine, actionOnReturn, "Hello from oatpp!: " + wholeMessage);
+      return socket->sendOneFrameTextAsync(parentCoroutine, std::forward<Action>(actionOnReturn), "Hello from oatpp!: " + wholeMessage);
     } else if(size > 0) {
       ++ FRAMES;
       m_messageBuffer.write(data, size);
     }
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
 };

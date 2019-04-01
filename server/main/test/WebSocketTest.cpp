@@ -102,19 +102,19 @@ public:
   virtual Action onPing(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                         const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override
   {
-    return socket->sendPongAsync(parentCoroutine, actionOnReturn, message);
+    return socket->sendPongAsync(parentCoroutine, std::forward<Action>(actionOnReturn), message);
   }
 
   virtual Action onPong(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                         const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override
   {
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
   virtual Action onClose(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                          const std::shared_ptr<AsyncWebSocket>& socket, v_word16 code, const oatpp::String& message) override
   {
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
   virtual Action readMessage(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
@@ -127,7 +127,7 @@ public:
     } else if(size > 0) {
       m_messageBuffer.write(data, size);
     }
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
 };

@@ -47,9 +47,10 @@ void run(const oatpp::base::CommandLineArguments& args) {
 
   std::list<std::thread> threads;
 
-  v_int32 maxSocketsNumber = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-max", "100"));
+  v_int32 maxSocketsNumber = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-max", "1000"));
   v_int32 maxSocketsPerPort = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-port", "10000"));
-  v_int32 sleepIteration = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("-s", "5"));
+  v_int32 sleepIteration = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--si", "5"));
+  v_int32 sleepFor = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--sf", "5"));
 
   v_int32 clientsCounter = 0;
 
@@ -66,8 +67,8 @@ void run(const oatpp::base::CommandLineArguments& args) {
 
     for(v_int32 i = 0; i < clientsToAdd; i++) {
       executor->execute<ClientCoroutine>(connector);
-      if(i % 10 == 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+      if(i % sleepIteration == 0) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleepFor));
       }
     }
 

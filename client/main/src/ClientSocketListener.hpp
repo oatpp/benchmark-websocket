@@ -22,28 +22,28 @@ private:
   oatpp::data::stream::ChunkedBuffer m_messageBuffer;
 public:
 
-  virtual Action onPing(oatpp::async::AbstractCoroutine* parentCoroutine, const Action& actionOnReturn,
+  virtual Action onPing(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                         const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override
   {
     ++ FRAMES;
-    return socket->sendPongAsync(parentCoroutine, actionOnReturn, message);
+    return socket->sendPongAsync(parentCoroutine, std::forward<Action>(actionOnReturn), message);
   }
 
-  virtual Action onPong(oatpp::async::AbstractCoroutine* parentCoroutine, const Action& actionOnReturn,
+  virtual Action onPong(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                         const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override
   {
     ++ FRAMES;
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
-  virtual Action onClose(oatpp::async::AbstractCoroutine* parentCoroutine, const Action& actionOnReturn,
+  virtual Action onClose(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                          const std::shared_ptr<AsyncWebSocket>& socket, v_word16 code, const oatpp::String& message) override
   {
     ++ FRAMES;
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
-  virtual Action readMessage(oatpp::async::AbstractCoroutine* parentCoroutine, const Action& actionOnReturn,
+  virtual Action readMessage(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                              const std::shared_ptr<AsyncWebSocket>& socket, p_char8 data, oatpp::data::v_io_size size) override
   {
     if(size == 0) {
@@ -55,7 +55,7 @@ public:
       ++ FRAMES;
       m_messageBuffer.write(data, size);
     }
-    return actionOnReturn;
+    return std::forward<Action>(actionOnReturn);
   }
 
 };
@@ -124,21 +124,13 @@ public:
     return finish();
   }
 
-  Action handleError(const oatpp::async::Error& error) override {
-    if(error.isExceptionThrown) {
-      try{
-        throw;
-      } catch(std::runtime_error e) {
-        OATPP_LOGD("aa", "error listen------------------------------------!!!!!!!!!!!!!!!!!! %s", e.what());
-      } catch(...) {
-        OATPP_LOGD("aa", "error listen------------------------------------!!!!!!!!!!!!!!!!!! %s", "unknown");
-      }
-
-    } else {
-      OATPP_LOGD("aa", "error listen------------------------------------!!!!!!!!!!!!!!!!!! %s", error.message);
+  Action handleError(const std::shared_ptr<const Error>& error) override {
+    if(error) {
+      OATPP_LOGD("aa", "error listen------------------------------------!!!!!!!!!!!!!!!!!! %s", error->what());
     }
+
     OATPP_ASSERT(false && "handleError");
-    return error;
+    return Action::TYPE_ERROR;
   }
 
 };

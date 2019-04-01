@@ -42,3 +42,8 @@ cmake-build-debug/
 # tmp
 
 tmp/
+
+# MAC
+
+**/.DS_Store
+

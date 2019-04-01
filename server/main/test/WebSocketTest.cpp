@@ -99,25 +99,25 @@ private:
   oatpp::data::stream::ChunkedBuffer m_messageBuffer;
 public:
 
-  virtual Action onPing(oatpp::async::AbstractCoroutine* parentCoroutine, const Action& actionOnReturn,
+  virtual Action onPing(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                         const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override
   {
     return socket->sendPongAsync(parentCoroutine, actionOnReturn, message);
   }
 
-  virtual Action onPong(oatpp::async::AbstractCoroutine* parentCoroutine, const Action& actionOnReturn,
+  virtual Action onPong(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                         const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override
   {
     return actionOnReturn;
   }
 
-  virtual Action onClose(oatpp::async::AbstractCoroutine* parentCoroutine, const Action& actionOnReturn,
+  virtual Action onClose(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                          const std::shared_ptr<AsyncWebSocket>& socket, v_word16 code, const oatpp::String& message) override
   {
     return actionOnReturn;
   }
 
-  virtual Action readMessage(oatpp::async::AbstractCoroutine* parentCoroutine, const Action& actionOnReturn,
+  virtual Action readMessage(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
                              const std::shared_ptr<AsyncWebSocket>& socket, p_char8 data, oatpp::data::v_io_size size) override
   {
     if(size == 0) {

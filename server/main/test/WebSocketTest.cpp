@@ -99,27 +99,19 @@ private:
   oatpp::data::stream::ChunkedBuffer m_messageBuffer;
 public:
 
-  virtual Action onPing(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
-                        const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override
-  {
-    return socket->sendPongAsync(parentCoroutine, std::forward<Action>(actionOnReturn), message);
+  CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
+    return socket->sendPongAsync(message);
   }
 
-  virtual Action onPong(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
-                        const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override
-  {
-    return std::forward<Action>(actionOnReturn);
+  CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
+    return nullptr;
   }
 
-  virtual Action onClose(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
-                         const std::shared_ptr<AsyncWebSocket>& socket, v_word16 code, const oatpp::String& message) override
-  {
-    return std::forward<Action>(actionOnReturn);
+  CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_word16 code, const oatpp::String& message) override {
+    return nullptr;
   }
 
-  virtual Action readMessage(oatpp::async::AbstractCoroutine* parentCoroutine, Action&& actionOnReturn,
-                             const std::shared_ptr<AsyncWebSocket>& socket, p_char8 data, oatpp::data::v_io_size size) override
-  {
+  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, p_char8 data, oatpp::data::v_io_size size) override {
     if(size == 0) {
       auto wholeMessage = m_messageBuffer.toString();
       m_messageBuffer.clear();
@@ -127,7 +119,7 @@ public:
     } else if(size > 0) {
       m_messageBuffer.write(data, size);
     }
-    return std::forward<Action>(actionOnReturn);
+    return nullptr;
   }
 
 };
@@ -156,15 +148,14 @@ private:
 public:
 
   Action act() override {
-    auto callback = static_cast<oatpp::websocket::Connector::AsyncCallback>(&ClientCoroutine::onConnected);
-    return connector->connectAsync(this, callback, "ws");
+    return connector->connectAsync("ws").callbackTo(&ClientCoroutine::onConnected);
   }
 
   Action onConnected(const std::shared_ptr<oatpp::data::stream::IOStream>& connection) {
     socket = oatpp::websocket::AsyncWebSocket::createShared(connection, true);
     socket->setListener(std::make_shared<ClientSocketListener>());
     executor->execute<ClientSenderCoroutine>(socket);
-    return socket->listenAsync(this, finish());
+    return socket->listenAsync().next(finish());
   }
 
 };

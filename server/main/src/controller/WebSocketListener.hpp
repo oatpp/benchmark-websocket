@@ -16,48 +16,32 @@ private:
   oatpp::data::stream::ChunkedBuffer m_messageBuffer;
 public:
 
-  virtual Action onPing(oatpp::async::AbstractCoroutine* parentCoroutine,
-                        Action&& actionOnReturn,
-                        const std::shared_ptr<AsyncWebSocket>& socket,
-                        const oatpp::String& message) override
-  {
+  CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
     ++ FRAMES;
-    return socket->sendPongAsync(parentCoroutine, std::forward<Action>(actionOnReturn), message);
+    return socket->sendPongAsync(message);
   }
 
-  virtual Action onPong(oatpp::async::AbstractCoroutine* parentCoroutine,
-                        Action&& actionOnReturn,
-                        const std::shared_ptr<AsyncWebSocket>& socket,
-                        const oatpp::String& message) override
-  {
+  CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
     ++ FRAMES;
-    return std::forward<Action>(actionOnReturn);
+    return nullptr;
   }
 
-  virtual Action onClose(oatpp::async::AbstractCoroutine* parentCoroutine,
-                         Action&& actionOnReturn,
-                         const std::shared_ptr<AsyncWebSocket>& socket,
-                         v_word16 code, const oatpp::String& message) override
-  {
+  CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_word16 code, const oatpp::String& message) override {
     ++ FRAMES;
-    return std::forward<Action>(actionOnReturn);
+    return nullptr;
   }
 
-  virtual Action readMessage(oatpp::async::AbstractCoroutine* parentCoroutine,
-                             Action&& actionOnReturn,
-                             const std::shared_ptr<AsyncWebSocket>& socket,
-                             p_char8 data, oatpp::data::v_io_size size) override
-  {
+  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, p_char8 data, oatpp::data::v_io_size size) override {
     if(size == 0) {
       auto wholeMessage = m_messageBuffer.toString();
       m_messageBuffer.clear();
       ++ MESSAGES;
-      return socket->sendOneFrameTextAsync(parentCoroutine, std::forward<Action>(actionOnReturn), "Hello from oatpp!: " + wholeMessage);
+      return socket->sendOneFrameTextAsync( "Hello from oatpp!: " + wholeMessage);
     } else if(size > 0) {
       ++ FRAMES;
       m_messageBuffer.write(data, size);
     }
-    return std::forward<Action>(actionOnReturn);
+    return nullptr;
   }
 
 };

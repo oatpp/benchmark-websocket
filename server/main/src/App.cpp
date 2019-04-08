@@ -23,8 +23,8 @@ void printStats() {
 
   v_int64 lastTickCount = oatpp::base::Environment::getMicroTickCount();
 
-  Meter framesMeter(10);
-  Meter messagesMeter(10);
+  Meter framesMeter(60 * 2);
+  Meter messagesMeter(60 * 2);
 
   while(true) {
 
@@ -36,9 +36,9 @@ void printStats() {
                "SOCKETS", "          %d              ", WebSocketInstanceListener::SOCKETS.load());
     OATPP_LOGD("FRAMES_TOTAL", "     %d              ", WebSocketListener::FRAMES.load());
     OATPP_LOGD("MESSAGES_TOTAL", "   %d              ", WebSocketListener::MESSAGES.load());
-    OATPP_LOGD("FRAMES_PER_SEC", "   %f              ", framesMeter.perSecond());
-    OATPP_LOGD("MESSAGES_PER_SEC", " %f              ", messagesMeter.perSecond());
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    OATPP_LOGD("FRAMES_PER_MIN", "   %f              ", framesMeter.perMinute());
+    OATPP_LOGD("MESSAGES_PER_MIN", " %f              ", messagesMeter.perMinute());
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
   }
 

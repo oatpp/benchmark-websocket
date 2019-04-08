@@ -18,8 +18,8 @@ void printStats() {
 
   OATPP_LOGD("Status", "\n\n\n\n\n");
 
-  Meter framesMeter(10);
-  Meter messagesMeter(10);
+  Meter framesMeter(60 * 2);
+  Meter messagesMeter(60 * 2);
 
   while(true) {
 
@@ -31,9 +31,9 @@ void printStats() {
                "SOCKETS", "          %d              ", ClientCoroutine::SOCKETS.load());
     OATPP_LOGD("FRAMES_TOTAL", "     %d              ", ClientSocketListener::FRAMES.load());
     OATPP_LOGD("MESSAGES_TOTAL", "   %d              ", ClientSocketListener::MESSAGES.load());
-    OATPP_LOGD("FRAMES_PER_SEC", "   %f              ", framesMeter.perSecond());
-    OATPP_LOGD("MESSAGES_PER_SEC", " %f              ", messagesMeter.perSecond());
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    OATPP_LOGD("FRAMES_PER_MIN", "   %f              ", framesMeter.perMinute());
+    OATPP_LOGD("MESSAGES_PER_MIN", " %f              ", messagesMeter.perMinute());
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
 
 };

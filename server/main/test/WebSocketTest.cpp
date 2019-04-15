@@ -134,7 +134,7 @@ public:
   {}
 
   Action act() override {
-    return waitRetry();
+    return waitRepeat(std::chrono::milliseconds(100));
     //return m_socket->sendOneFrameTextAsync(this, waitRetry(), "hello!");
   }
 

@@ -117,7 +117,7 @@ public:
     }
 
     OATPP_ASSERT(false && "handleError");
-    return Action::TYPE_ERROR;
+    return propagateError();
   }
 
 };

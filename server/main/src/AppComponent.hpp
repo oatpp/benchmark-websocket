@@ -21,6 +21,9 @@
 
 #include "oatpp/core/macro/component.hpp"
 
+#include "oatpp/core/base/CommandLineArguments.hpp"
+#include "oatpp/core/utils/ConversionUtils.hpp"
+
 #include <list>
 
 /**
@@ -28,6 +31,12 @@
  *  Order of components initialization is from top to bottom
  */
 class AppComponent {
+private:
+  oatpp::base::CommandLineArguments m_cmdArgs;
+public:
+  AppComponent(const oatpp::base::CommandLineArguments& cmdArgs)
+    : m_cmdArgs(cmdArgs)
+  {}
 public:
   
   /**
@@ -66,11 +75,20 @@ public:
     return oatpp::parser::json::mapping::ObjectMapper::createShared();
   }());
 
+  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor)([this] {
+    v_int32 threadsProc = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tp", "8"));
+    v_int32 threadsIO = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tio", "2"));
+    v_int32 threadsTimer = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tt", "1"));
+    OATPP_LOGD("Server", "Executor: tp=%d, tio=%d, tt=%d", threadsProc, threadsIO, threadsTimer);
+    return std::make_shared<oatpp::async::Executor>(threadsProc, threadsIO, threadsTimer);
+  }());
+
   /**
    *  Create websocket connection handler
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::websocket::AsyncConnectionHandler>, websocketConnectionHandler)([] {
-    auto connectionHandler = oatpp::websocket::AsyncConnectionHandler::createShared(5);
+    OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
+    auto connectionHandler = oatpp::websocket::AsyncConnectionHandler::createShared(executor);
     connectionHandler->setSocketInstanceListener(std::make_shared<WebSocketInstanceListener>());
     return connectionHandler;
   }());

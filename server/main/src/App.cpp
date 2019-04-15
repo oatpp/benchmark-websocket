@@ -44,9 +44,9 @@ void printStats() {
 
 };
 
-void run() {
+void run(const oatpp::base::CommandLineArguments& args) {
   
-  AppComponent components; // Create scope Environment components
+  AppComponent components(args); // Create scope Environment components
   
   /* create ApiControllers and add endpoints to router */
   
@@ -94,7 +94,7 @@ int main(int argc, const char * argv[]) {
   oatpp::base::Environment::setLogger(new Logger());
   oatpp::base::Environment::init();
 
-  run();
+  run(oatpp::base::CommandLineArguments(argc, argv));
   
   oatpp::base::Environment::setLogger(nullptr); ///< free Logger
   

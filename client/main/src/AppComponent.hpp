@@ -33,8 +33,10 @@ public:
 public:
 
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor)([this] {
-    v_int32 threads = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("-t", "10"));
-    return std::make_shared<oatpp::async::Executor>(threads);
+    v_int32 threadsProc = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tp", "8"));
+    v_int32 threadsIO = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tio", "2"));
+    v_int32 threadsTimer = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tt", "1"));
+    return std::make_shared<oatpp::async::Executor>(threadsProc, threadsIO, threadsTimer);
   }());
 
   OATPP_CREATE_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ClientConnectionProvider>>>, connectionProviders)([this] {

@@ -11,6 +11,6 @@
 #include <iostream>
 
 void Logger::log(v_int32 priority, const std::string& tag, const std::string& message) {
-  oatpp::concurrency::SpinLock lock(m_atom);
+  std::lock_guard<oatpp::concurrency::SpinLock> lock(m_lock);
   std::cout << tag << ":" << message << "\n";
 }

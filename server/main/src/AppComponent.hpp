@@ -47,7 +47,7 @@ public:
     v_int32 basePort = 8000;
     for(v_int32 i = 0; i < 100; i++) {
       OATPP_LOGD("AppComponent", "Connection Provider for port: %d", basePort + i);
-      auto provider = oatpp::network::server::SimpleTCPConnectionProvider::createShared(basePort + i, true /* Non-Blocking */);
+      auto provider = oatpp::network::server::SimpleTCPConnectionProvider::createShared(basePort + i);
       providers->push_back(provider);
     }
     return providers;

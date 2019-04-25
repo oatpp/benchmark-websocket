@@ -13,7 +13,7 @@ cd tmp
 ########################################
 # oatpp
 
-git clone https://github.com/oatpp/oatpp
+git clone -b event_based_io_worker https://github.com/oatpp/oatpp
 
 cd oatpp
 mkdir build && cd $_
@@ -27,7 +27,7 @@ cd ../../
 ########################################
 # oatpp
 
-git clone https://github.com/oatpp/oatpp-websocket
+git clone -b async_executor_with_scheduler https://github.com/oatpp/oatpp-websocket
 
 cd oatpp-websocket
 mkdir build && cd $_

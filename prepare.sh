@@ -25,7 +25,7 @@ make install
 cd ../../
 
 ########################################
-# oatpp
+# oatpp-websocket
 
 git clone -b master https://github.com/oatpp/oatpp-websocket
 

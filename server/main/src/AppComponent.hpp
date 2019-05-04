@@ -65,7 +65,7 @@ public:
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::server::ConnectionHandler>, serverConnectionHandler)([] {
     OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
-    return oatpp::web::server::AsyncHttpConnectionHandler::createShared(router, 1);
+    return oatpp::web::server::AsyncHttpConnectionHandler::createShared(router, 4);
   }());
   
   /**

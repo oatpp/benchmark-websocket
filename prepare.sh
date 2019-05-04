@@ -13,7 +13,7 @@ cd tmp
 ########################################
 # oatpp
 
-git clone -b full_duplex_mode_support_for_io-event-worker https://github.com/oatpp/oatpp
+git clone -b master https://github.com/oatpp/oatpp
 
 cd oatpp
 mkdir build && cd $_

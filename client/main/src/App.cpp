@@ -14,6 +14,9 @@
 #include <iostream>
 #include <thread>
 
+/**
+ * Print Stats.
+ */
 void printStats() {
 
   OATPP_LOGD("Status", "\n\n\n\n\n");
@@ -42,10 +45,11 @@ void run(const oatpp::base::CommandLineArguments& args) {
   
   AppComponent components(args); // Create scope Environment components
 
+  /* Get list of connection providers */
   OATPP_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ClientConnectionProvider>>>, connectionProviders);
-  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
 
-  std::list<std::thread> threads;
+  /* Get AsyncExecutor */
+  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
 
   v_int32 maxSocketsNumber = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-max", "1000"));
   v_int32 maxSocketsPerPort = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-port", "10000"));
@@ -86,10 +90,13 @@ void run(const oatpp::base::CommandLineArguments& args) {
     printStats();
   });
 
+  /* Wait all clients to connect */
+  /* Do not start load until all clients are connected */
   while(ClientCoroutine::SOCKETS < maxSocketsNumber) {
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
   }
 
+  /* Once all clients are connected - start load */
   for(auto& socket : ClientCoroutine::SOCKETS_LIST) {
     executor->execute<ClientSenderCoroutine>(socket);
   }

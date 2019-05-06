@@ -40,7 +40,7 @@ public:
 public:
   
   /**
-   *  Create ConnectionProvider component which listens on the port
+   *  Create List of 100 Connection Providers listening on ports from 8000..8099
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>, connectionProviders)([] {
     auto providers = std::make_shared<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>();
@@ -61,13 +61,13 @@ public:
   }());
   
   /**
-   *  Create ConnectionHandler component which uses Router component to route requests
+   *  Create HTTP ConnectionHandler component which uses Router component to route requests
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::server::ConnectionHandler>, serverConnectionHandler)([] {
     OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
     return oatpp::web::server::AsyncHttpConnectionHandler::createShared(router, 4);
   }());
-  
+
   /**
    *  Create ObjectMapper component to serialize/deserialize DTOs in Contoller's API
    */
@@ -75,6 +75,9 @@ public:
     return oatpp::parser::json::mapping::ObjectMapper::createShared();
   }());
 
+  /**
+   * Create AsyncExecutor for WebSocket Asynchronous Connection Handler
+   */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor)([this] {
     v_int32 threadsProc = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tp", "8"));
     v_int32 threadsIO = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tio", "2"));

@@ -164,24 +164,25 @@ public:
 
 void WebSocketTest::onRun() {
 
+//  TestComponent component;
+//
+//  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
+//
+//  oatpp::test::web::ClientServerTestRunner runner;
+//
+//  runner.addController(MyController::createShared());
+//
+//  runner.run([] {
+//
+//    OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
+//
+//    executor->execute<ClientCoroutine>();
+//
+//    executor->join();
+//
+//
+//  }, std::chrono::minutes(10));
 
-  TestComponent component;
-
-  OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
-
-  oatpp::test::web::ClientServerTestRunner runner;
-
-  runner.addController(MyController::createShared());
-
-  runner.run([] {
-
-    OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
-
-    executor->execute<ClientCoroutine>();
-
-    executor->join();
-
-
-  }, std::chrono::minutes(10));
+OATPP_LOGD(TAG, "TODO - write tests");
 
 }

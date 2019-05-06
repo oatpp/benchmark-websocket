@@ -32,23 +32,37 @@ public:
   {}
 public:
 
+  /**
+   * Create AsyncExecutor for WebSocket Asynchronous processing.
+   */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor)([this] {
+
     v_int32 threadsProc = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tp", "8"));
     v_int32 threadsIO = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tio", "2"));
     v_int32 threadsTimer = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tt", "1"));
+
     return std::make_shared<oatpp::async::Executor>(threadsProc, threadsIO, threadsTimer);
+
   }());
 
+  /**
+   * Create list of TCP Connection Providers. Each provider connects to its specific port.
+   */
   OATPP_CREATE_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ClientConnectionProvider>>>, connectionProviders)([this] {
+
     auto providers = std::make_shared<std::list<std::shared_ptr<oatpp::network::ClientConnectionProvider>>>();
+
     const char* host = m_cmdArgs.getNamedArgumentValue("-h", "127.0.0.1");
     v_int32 basePort = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("-p", "8000"));
     v_int32 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--ports-count", "100"));
+
     for(v_int32 i = 0; i < portsCount; i++) {
       auto provider = oatpp::network::client::SimpleTCPConnectionProvider::createShared(host, basePort + i);
       providers->push_back(provider);
     }
+
     return providers;
+
   }());
 
 

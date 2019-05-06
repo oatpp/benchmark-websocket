@@ -12,17 +12,13 @@
 #include "oatpp-websocket/Handshaker.hpp"
 #include "oatpp-websocket/AsyncConnectionHandler.hpp"
 
-#include "dto/MyDto.hpp"
-
 #include "oatpp/web/server/api/ApiController.hpp"
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 
 /**
- *  EXAMPLE ApiController
- *  Basic examples of howto create ENDPOINTs
- *  More details on oatpp.io
+ * Controller with WebSocket-connect endpoint.
  */
 class MyController : public oatpp::web::server::api::ApiController {
 private:
@@ -52,12 +48,22 @@ public:
   ENDPOINT_ASYNC("GET", "/", Root) {
     
     ENDPOINT_ASYNC_INIT(Root)
-    
+
+    const char* pageTemplate =
+      "<html lang='en'>"
+        "<head>"
+          "<meta charset=utf-8/>"
+        "</head>"
+        "<body>"
+          "<p>Hello oatpp WebSocket benchmark!</p>"
+          "<p>"
+            "You may connect WebSocket client on '&lt;host&gt;:&lt;port&gt;/ws'"
+          "</p>"
+        "</body>"
+      "</html>";
+
     Action act() override {
-      auto dto = MyDto::createShared();
-      dto->statusCode = 200;
-      dto->message = "Hello World Async!";
-      return _return(controller->createDtoResponse(Status::CODE_200, dto));
+      return _return(controller->createResponse(Status::CODE_200, pageTemplate));
     }
     
   };

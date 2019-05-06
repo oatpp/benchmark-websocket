@@ -8,49 +8,86 @@
 #include "oatpp-websocket/AsyncConnectionHandler.hpp"
 #include "oatpp-websocket/AsyncWebSocket.hpp"
 
+/**
+ * WebSocket listener listens on incoming WebSocket events.
+ */
 class WebSocketListener : public oatpp::websocket::AsyncWebSocket::Listener {
 public:
+  /**
+   * Counter for received messages - counts complete messages only.
+   */
   static std::atomic<v_int32> MESSAGES;
+
+  /**
+   * Counter for received frames.
+   */
   static std::atomic<v_int32> FRAMES;
 private:
+
+  /**
+   * Buffer for messages. Needed for multi-frame messages.
+   */
   oatpp::data::stream::ChunkedBuffer m_messageBuffer;
 public:
 
+  /**
+   * Called on "ping" frame.
+   */
   CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
     ++ FRAMES;
     return socket->sendPongAsync(message);
   }
 
+  /**
+   * Called on "pong" frame
+   */
   CoroutineStarter onPong(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
     ++ FRAMES;
-    return nullptr;
+    return nullptr; // do nothing
   }
 
+  /**
+   * Called on "close" frame
+   */
   CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_word16 code, const oatpp::String& message) override {
     ++ FRAMES;
-    return nullptr;
+    return nullptr; // do nothing
   }
 
+  /**
+   * Called on each message frame. After the last message will be called once-again with size == 0 to designate end of the message.
+   */
   CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, p_char8 data, oatpp::data::v_io_size size) override {
-    if(size == 0) {
+
+    if(size == 0) { // message transfer finished
+
       auto wholeMessage = m_messageBuffer.toString();
       m_messageBuffer.clear();
       ++ MESSAGES;
+
+      /* Send message in reply */
       return socket->sendOneFrameTextAsync( "Hello from oatpp!: " + wholeMessage);
-    } else if(size > 0) {
+
+    } else if(size > 0) { // message frame received
       ++ FRAMES;
       m_messageBuffer.write(data, size);
     }
-    return nullptr;
+
+    return nullptr; // do nothing
+
   }
 
 };
 
+/**
+ * Listener on new WebSocket connections.
+ */
 class WebSocketInstanceListener : public oatpp::websocket::AsyncConnectionHandler::SocketInstanceListener {
 public:
+  /**
+   * Counter for connected clients.
+   */
   static std::atomic<v_int32> SOCKETS;
-private:
-  static constexpr const char* const TAG = "WebSocketInstanceListener";
 public:
 
   /**
@@ -58,6 +95,9 @@ public:
    */
   void onAfterCreate_NonBlocking(const std::shared_ptr<WebSocketListener::AsyncWebSocket>& socket) override {
     ++ SOCKETS;
+
+    /* In this particular case we create one WebSocketListener per each connection */
+    /* Which may be redundant in many cases */
     socket->setListener(std::make_shared<WebSocketListener>());
   }
 

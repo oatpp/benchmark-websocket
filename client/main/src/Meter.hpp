@@ -9,6 +9,9 @@
 
 #include <queue>
 
+/**
+ * Class to calculate stats.
+ */
 class Meter {
 private:
   std::queue<v_int64> m_ticks; // in micro

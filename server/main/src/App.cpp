@@ -17,6 +17,9 @@
 #include <iostream>
 #include <thread>
 
+/**
+ * Print Stats.
+ */
 void printStats() {
 
   OATPP_LOGD("Status", "\n\n\n\n\n");
@@ -56,11 +59,6 @@ void run(const oatpp::base::CommandLineArguments& args) {
   myController->addEndpointsToRouter(router);
   
   /* create servers */
-  
-  //oatpp::network::server::Server server(components.serverConnectionProvider.getObject(),
-  //                                      components.serverConnectionHandler.getObject());
-  
-  //OATPP_LOGD("Server", "Running on port %s...", components.serverConnectionProvider.getObject()->getProperty("port").toString()->c_str());
 
   OATPP_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>, connectionProviders);
 

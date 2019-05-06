@@ -13,8 +13,9 @@ add_library(${project_name}-lib
         src/Logger.hpp
         src/Logger.cpp
         src/controller/MyController.hpp
-        src/dto/MyDto.hpp
-        src/controller/WebSocketListener.cpp src/controller/WebSocketListener.hpp)
+        src/controller/WebSocketListener.cpp
+        src/controller/WebSocketListener.hpp
+)
 
 ## link libs
 

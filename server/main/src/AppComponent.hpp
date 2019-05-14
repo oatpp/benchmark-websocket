@@ -42,10 +42,11 @@ public:
   /**
    *  Create List of 100 Connection Providers listening on ports from 8000..8099
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>, connectionProviders)([] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>, connectionProviders)([this] {
     auto providers = std::make_shared<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>();
-    v_int32 basePort = 8000;
-    for(v_int32 i = 0; i < 100; i++) {
+    v_int32 basePort = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--bp", "8000"));
+    v_int32 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--pc", "100"));
+    for(v_int32 i = 0; i < portsCount; i++) {
       OATPP_LOGD("AppComponent", "Connection Provider for port: %d", basePort + i);
       auto provider = oatpp::network::server::SimpleTCPConnectionProvider::createShared(basePort + i);
       providers->push_back(provider);

@@ -53,8 +53,8 @@ public:
     auto providers = std::make_shared<std::list<std::shared_ptr<oatpp::network::ClientConnectionProvider>>>();
 
     const char* host = m_cmdArgs.getNamedArgumentValue("-h", "127.0.0.1");
-    v_int32 basePort = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("-p", "8000"));
-    v_int32 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--ports-count", "100"));
+    v_int32 basePort = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--bp", "8000"));
+    v_int32 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--pc", "100"));
 
     for(v_int32 i = 0; i < portsCount; i++) {
       auto provider = oatpp::network::client::SimpleTCPConnectionProvider::createShared(host, basePort + i);

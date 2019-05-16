@@ -13,7 +13,7 @@ sysctl -w net.ipv4.tcp_rmem='4096 4096 4096'
 sysctl -w net.ipv4.tcp_wmem='4096 4096 4096'
 
 sysctl -w net.core.rmem_default=4096
-sysctl -w net.core.wmem_default=4096
+sysctl -w net.core.wmem_default=4608
 
 sysctl -w net.core.rmem_max=4096
-sysctl -w net.core.wmem_max=4096
+sysctl -w net.core.wmem_max=4608

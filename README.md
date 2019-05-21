@@ -59,7 +59,7 @@ $ ./prepare.sh
 - Configure environment (run ./sock-config-5m.sh script)
 
 ```bash
-$ ./sock-config.sh
+$ ./sock-config-5m.sh
 $ ulimit -n 6000000
 ```
 

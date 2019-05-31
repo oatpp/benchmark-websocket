@@ -1,6 +1,6 @@
 # benchmark-websocket
 
-About recent results read here: [2 Million WebSockets](https://oatpp.io/benchmark/websocket/2-million/)
+About recent results read here: [5 Million WebSockets](https://oatpp.io/benchmark/websocket/5-million/)
 
 See also:
 - [oatpp repo](https://github.com/oatpp/oatpp)  
@@ -28,7 +28,7 @@ Both server and client are implemented based on oatpp Async API and [oatpp-corou
 
 ## Reproduce latest benchmark
 
-Create two `n1-highmem-8 (8 vCPUs, 52 GB memory) - Debian GNU/Linux 9` instances in same VPC on Google Cloud.
+Create two `n1-highmem-16 (16 vCPUs, 104 GB memory) - Debian GNU/Linux 9` instances in same VPC on Google Cloud.
 
 ### Execute the following commands for both instances (SSH).
 
@@ -56,11 +56,11 @@ $ cd benchmark-websocket
 $ ./prepare.sh
 ```
 
-- Configure environment (run ./sock-config.sh script)
+- Configure environment (run ./sock-config-5m.sh script)
 
 ```bash
-$ ./sock-config.sh
-$ ulimit -n 3000000
+$ ./sock-config-5m.sh
+$ ulimit -n 6000000
 ```
 
 ### Build and Run Server
@@ -78,11 +78,12 @@ $ make
 - Run server
 
 ```bash
-$ ./my-project-exe --tp 9 --tio 3
+$ ./my-project-exe --tp 16 --tio 8 --pc 500
 ```
 where:  
 `--tp` - number of data-processing threads.  
-`--tio` - number of I/O workers.
+`--tio` - number of I/O workers.  
+`--pc` - number of ports to listen to.
 
 ### Build and Run Client
 
@@ -99,7 +100,7 @@ $ make
 - Run client
 
 ```bash
-$ ./my-project-exe --tp 9 --tio 3 -h <server-private-ip> --socks-max 2000000 --socks-port 20000 --si 1000 --sf 50
+$ ./my-project-exe --tp 16 --tio 8 -h <server-private-ip> --socks-max 5000000 --socks-port 10000 --si 1000 --sf 30 --pc 500
 ```
 where:  
 `--tp` - number of data-processing threads.  
@@ -107,13 +108,14 @@ where:
 `-h <server-private-ip>` - substitute **private-ip** of server instance here.  
 `--socks-max` - how many client connections to establish.  
 `--socks-port` - how many client connections per port.  
-`--si 1000 --sf 50` - control how fast clients will connect to server. Here - each `1000` iterations sleep for `50` milliseconds.
+`--si 1000 --sf 30` - control how fast clients will connect to server. Here - each `1000` iterations sleep for `30` milliseconds.  
+`--pc` - number of available server ports to connect to. 
 
 **Note** - clients will not start load until all clients are connected.  
-**Note** - client app will fail with assertion if any of clients is failed.
+**Note** - client app will fail with assertion if any of clients has failed.
 
 ## Links
 
-- [Latest benchmark](https://oatpp.io/benchmark/websocket/2-million/)
+- [Latest benchmark](https://oatpp.io/benchmark/websocket/5-million/)
 - [oatpp-websocket repo](https://github.com/oatpp/oatpp-websocket)
 - [oatpp repo](https://github.com/oatpp/oatpp)

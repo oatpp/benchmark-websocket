@@ -93,7 +93,7 @@ public:
   /**
    *  Called when socket is created
    */
-  void onAfterCreate_NonBlocking(const std::shared_ptr<WebSocketListener::AsyncWebSocket>& socket) override {
+  void onAfterCreate_NonBlocking(const std::shared_ptr<AsyncWebSocket>& socket, const std::shared_ptr<const ParameterMap>& params) override {
     ++ SOCKETS;
 
     /* In this particular case we create one WebSocketListener per each connection */

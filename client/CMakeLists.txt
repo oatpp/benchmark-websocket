@@ -49,3 +49,6 @@ set_target_properties(${project_name}-lib ${project_name}-exe ${project_name}-te
         CXX_STANDARD_REQUIRED ON
         LINKER_LANGUAGE CXX
 )
+
+enable_testing()
+add_test(tests ${project_name}-test)

@@ -13,13 +13,13 @@ jobs:
           sudo ./prepare.sh
         displayName: 'prepare.sh'
       - script: |
-          cmake ..
+          sudo cmake ..
           sudo make
           make test ARGS="-V"
         workingDirectory: server/build
         displayName: 'build server'
       - script: |
-          cmake ..
+          sudo cmake ..
           sudo make
           make test ARGS="-V"
         workingDirectory: client/build

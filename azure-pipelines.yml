@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 jobs:
   - job: ubuntu_16_04
     displayName: 'Build - Ubuntu 16.04'
@@ -15,13 +10,17 @@ jobs:
       clean: all
     steps:
       - script: |
-          mkdir build
+          sudo ./prepare.sh
+        displayName: 'prepare.sh'
       - script: |
           cmake ..
           sudo make
-        displayName: 'CMake'
-        workingDirectory: build
-      - script: |
           make test ARGS="-V"
-        displayName: 'Test'
-        workingDirectory: build
+        workingDirectory: server/build
+        displayName: 'build server'
+      - script: |
+          cmake ..
+          sudo make
+          make test ARGS="-V"
+        workingDirectory: client/build
+        displayName: 'build client'

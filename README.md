@@ -1,4 +1,4 @@
-# benchmark-websocket
+# benchmark-websocket [![Build Status](https://dev.azure.com/lganzzzo/lganzzzo/_apis/build/status/oatpp.benchmark-websocket?branchName=master)](https://dev.azure.com/lganzzzo/lganzzzo/_build/latest?definitionId=19&branchName=master)
 
 About recent results read here: [5 Million WebSockets](https://oatpp.io/benchmark/websocket/5-million/)
 

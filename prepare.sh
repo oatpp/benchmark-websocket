@@ -3,8 +3,8 @@
 apt-get install -y cmake
 apt-get install -y build-essential
 
-mkdir -p ./client/main/build
-mkdir -p ./server/main/build
+mkdir -p ./client/build
+mkdir -p ./server/build
 
 mkdir ./tmp
 

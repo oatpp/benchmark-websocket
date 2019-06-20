@@ -1,46 +1,53 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(project_name my-project) ## rename your project here
+set(project_name wsb-server) ## rename your project here
 
-project(${project_name}-loader)
+project(${project_name})
 
-include(ExternalProject)
+set(CMAKE_CXX_STANDARD 11)
 
-#############################################################################
-## load all dependencies
+include_directories(src)
 
-ExternalProject_Add(oatpp
-        GIT_REPOSITORY "https://github.com/oatpp/oatpp.git"
-        GIT_TAG origin/master
-        CMAKE_ARGS -DOATPP_BUILD_TESTS=OFF
+add_library(${project_name}-lib
+        src/AppComponent.hpp
+        src/Logger.hpp
+        src/Logger.cpp
+        src/controller/MyController.hpp
+        src/controller/WebSocketListener.cpp
+        src/controller/WebSocketListener.hpp
 )
 
-ExternalProject_Add(oatpp-websocket
-        GIT_REPOSITORY "https://github.com/oatpp/oatpp-websocket.git"
-        GIT_TAG origin/master
-        CMAKE_ARGS -DOATPP_BUILD_TESTS=OFF
-        DEPENDS oatpp
+## link libs
+
+find_package(oatpp              0.19.4 REQUIRED)
+find_package(oatpp-websocket    0.19.4 REQUIRED)
+
+target_link_libraries(${project_name}-lib
+        PUBLIC oatpp::oatpp
+        PUBLIC oatpp::oatpp-test
+        PUBLIC oatpp::oatpp-websocket
 )
 
-ExternalProject_Add(main
-        SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/main
-        INSTALL_COMMAND cmake -E echo "SKIP INSTALL"
-        DEPENDS oatpp oatpp-websocket
+## add executables
+
+add_executable(${project_name}-exe
+        src/App.cpp
+)
+target_link_libraries(${project_name}-exe ${project_name}-lib)
+add_dependencies(${project_name}-exe ${project_name}-lib)
+
+add_executable(${project_name}-test
+        test/tests.cpp
+        test/WebSocketTest.cpp
+        test/WebSocketTest.hpp
 )
 
-#############################################################################
-## make run command
+target_link_libraries(${project_name}-test ${project_name}-lib)
+add_dependencies(${project_name}-test ${project_name}-lib)
 
-ExternalProject_Get_Property(main BINARY_DIR)
-
-add_custom_target(run
-        COMMAND ${BINARY_DIR}/${project_name}-exe
-        DEPENDS main
-        WORKING_DIRECTORY ${BINARY_DIR}
+set_target_properties(${project_name}-lib ${project_name}-exe ${project_name}-test PROPERTIES
+        CXX_STANDARD 11
+        CXX_EXTENSIONS OFF
+        CXX_STANDARD_REQUIRED ON
+        LINKER_LANGUAGE CXX
 )
-
-#############################################################################
-## make test command
-
-enable_testing()
-add_test(all-tests ${BINARY_DIR}/${project_name}-test)

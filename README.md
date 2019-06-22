@@ -3,8 +3,10 @@
 About recent results read here: [5 Million WebSockets](https://oatpp.io/benchmark/websocket/5-million/)
 
 See also:
-- [oatpp repo](https://github.com/oatpp/oatpp)  
-- [oatpp-websocket repo](https://github.com/oatpp/oatpp-websocket)
+
+- [Oat++ Website](https://oatpp.io/)
+- [Oat++ Github Repository](https://github.com/oatpp/oatpp)
+- [oatpp-websocket Repository](https://github.com/oatpp/oatpp-websocket)
 
 ## Overview
 
@@ -28,7 +30,7 @@ Both server and client are implemented based on oatpp Async API and [oatpp-corou
 
 ## Reproduce latest benchmark
 
-Create two `n1-highmem-16 (16 vCPUs, 104 GB memory) - Debian GNU/Linux 9` instances in same VPC on Google Cloud.
+Create two `n1-highmem-32 (32 vCPUs, 208 GB memory) - Debian GNU/Linux 9` instances in same VPC on Google Cloud.
 
 ### Execute the following commands for both instances (SSH).
 
@@ -116,6 +118,6 @@ where:
 
 ## Links
 
-- [Latest benchmark](https://oatpp.io/benchmark/websocket/5-million/)
-- [oatpp-websocket repo](https://github.com/oatpp/oatpp-websocket)
-- [oatpp repo](https://github.com/oatpp/oatpp)
+- [Latest Benchmark](https://oatpp.io/benchmark/websocket/5-million/)
+- [Oat++ Github Repository](https://github.com/oatpp/oatpp)
+- [oatpp-websocket Repository](https://github.com/oatpp/oatpp-websocket)

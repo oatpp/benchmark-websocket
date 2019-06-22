@@ -30,7 +30,7 @@ Both server and client are implemented based on oatpp Async API and [oatpp-corou
 
 ## Reproduce latest benchmark
 
-Create two `n1-highmem-32 (32 vCPUs, 208 GB memory) - Debian GNU/Linux 9` instances in same VPC on Google Cloud.
+Create two `n1-highmem-16 (16 vCPUs, 104 GB memory) - Debian GNU/Linux 9` instances in same VPC on Google Cloud.
 
 ### Execute the following commands for both instances (SSH).
 

@@ -3,8 +3,10 @@
 About recent results read here: [5 Million WebSockets](https://oatpp.io/benchmark/websocket/5-million/)
 
 See also:
-- [oatpp repo](https://github.com/oatpp/oatpp)  
-- [oatpp-websocket repo](https://github.com/oatpp/oatpp-websocket)
+
+- [Oat++ Website](https://oatpp.io/)
+- [Oat++ Github Repository](https://github.com/oatpp/oatpp)
+- [oatpp-websocket Repository](https://github.com/oatpp/oatpp-websocket)
 
 ## Overview
 
@@ -116,6 +118,6 @@ where:
 
 ## Links
 
-- [Latest benchmark](https://oatpp.io/benchmark/websocket/5-million/)
-- [oatpp-websocket repo](https://github.com/oatpp/oatpp-websocket)
-- [oatpp repo](https://github.com/oatpp/oatpp)
+- [Latest Benchmark](https://oatpp.io/benchmark/websocket/5-million/)
+- [Oat++ Github Repository](https://github.com/oatpp/oatpp)
+- [oatpp-websocket Repository](https://github.com/oatpp/oatpp-websocket)

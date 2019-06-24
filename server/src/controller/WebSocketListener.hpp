@@ -96,6 +96,11 @@ public:
   void onAfterCreate_NonBlocking(const std::shared_ptr<AsyncWebSocket>& socket, const std::shared_ptr<const ParameterMap>& params) override {
     ++ SOCKETS;
 
+    oatpp::websocket::Config config;
+    config.readBufferSize = 64;
+
+    socket->setConfig(config);
+
     /* In this particular case we create one WebSocketListener per each connection */
     /* Which may be redundant in many cases */
     socket->setListener(std::make_shared<WebSocketListener>());

@@ -96,9 +96,19 @@ void run(const oatpp::base::CommandLineArguments& args) {
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
   }
 
+
   /* Once all clients are connected - start load */
+
+  oatpp::websocket::Config config;
+
+  config.maskOutgoingMessages = true;
+  config.readBufferSize = 64;
+
   for(auto& socket : ClientCoroutine::SOCKETS_LIST) {
+
+    socket->setConfig(config);
     executor->execute<ClientSenderCoroutine>(socket);
+
   }
 
   executor->join();

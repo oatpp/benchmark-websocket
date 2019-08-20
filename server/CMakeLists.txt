@@ -19,8 +19,8 @@ add_library(${project_name}-lib
 
 ## link libs
 
-find_package(oatpp              0.19.7 REQUIRED)
-find_package(oatpp-websocket    0.19.7 REQUIRED)
+find_package(oatpp              0.19.8 REQUIRED)
+find_package(oatpp-websocket    0.19.8 REQUIRED)
 
 target_link_libraries(${project_name}-lib
         PUBLIC oatpp::oatpp

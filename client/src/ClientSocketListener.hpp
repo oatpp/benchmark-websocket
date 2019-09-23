@@ -173,13 +173,13 @@ public:
     return finish();
   }
 
-  Action handleError(const std::shared_ptr<const Error>& error) override {
+  Action handleError(Error* error) override {
     if(error) {
       OATPP_LOGD("ClientCoroutine", "Error. %s", error->what());
     }
 
     OATPP_ASSERT(false && "handleError - any error in WebSocket communication is considered to be fatal in this benchmark");
-    return propagateError();
+    return error;
   }
 
 };

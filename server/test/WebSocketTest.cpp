@@ -117,7 +117,7 @@ public:
       m_messageBuffer.clear();
       OATPP_LOGD("client", "received %s", wholeMessage->c_str());
     } else if(size > 0) {
-      m_messageBuffer.write(data, size);
+      m_messageBuffer.writeSimple(data, size);
     }
     return nullptr;
   }

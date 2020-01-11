@@ -57,7 +57,7 @@ public:
   /**
    * Called on each message frame. After the last message will be called once-again with size == 0 to designate end of the message.
    */
-  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_word8 opcode, p_char8 data, oatpp::data::v_io_size size) override {
+  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_word8 opcode, p_char8 data, oatpp::v_io_size size) override {
 
     if(size == 0) { // message transfer finished
 
@@ -70,7 +70,7 @@ public:
 
     } else if(size > 0) { // message frame received
       ++ FRAMES;
-      m_messageBuffer.write(data, size);
+      m_messageBuffer.writeSimple(data, size);
     }
 
     return nullptr; // do nothing

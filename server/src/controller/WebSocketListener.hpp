@@ -49,7 +49,7 @@ public:
   /**
    * Called on "close" frame
    */
-  CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_word16 code, const oatpp::String& message) override {
+  CoroutineStarter onClose(const std::shared_ptr<AsyncWebSocket>& socket, v_uint16 code, const oatpp::String& message) override {
     ++ FRAMES;
     return nullptr; // do nothing
   }
@@ -57,7 +57,7 @@ public:
   /**
    * Called on each message frame. After the last message will be called once-again with size == 0 to designate end of the message.
    */
-  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_word8 opcode, p_char8 data, oatpp::v_io_size size) override {
+  CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) override {
 
     if(size == 0) { // message transfer finished
 

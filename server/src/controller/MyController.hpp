@@ -17,6 +17,9 @@
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 
+
+#include OATPP_CODEGEN_BEGIN(ApiController) //<-- codegen begin
+
 /**
  * Controller with WebSocket-connect endpoint.
  */
@@ -39,11 +42,7 @@ public:
                                                                     objectMapper)){
     return std::shared_ptr<MyController>(new MyController(objectMapper));
   }
-  
-  /**
-   *  Begin ENDPOINTs generation ('ApiController' codegen)
-   */
-#include OATPP_CODEGEN_BEGIN(ApiController)
+
   
   ENDPOINT_ASYNC("GET", "/", Root) {
     
@@ -80,12 +79,9 @@ public:
   };
   
   // TODO Insert Your endpoints here !!!
-  
-  /**
-   *  Finish ENDPOINTs generation ('ApiController' codegen)
-   */
-#include OATPP_CODEGEN_END(ApiController)
-  
+
 };
+
+#include OATPP_CODEGEN_END(ApiController) //<-- codegen end
 
 #endif /* MyController_hpp */

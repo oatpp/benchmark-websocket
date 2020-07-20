@@ -22,7 +22,7 @@ private:
   oatpp::concurrency::SpinLock m_lock;
 public:
 
-  void log(v_int32 priority, const std::string& tag, const std::string& message) override;
+  void log(v_uint32 priority, const std::string& tag, const std::string& message) override;
   
 };
 

@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-void Logger::log(v_int32 priority, const std::string& tag, const std::string& message) {
+void Logger::log(v_uint32 priority, const std::string& tag, const std::string& message) {
   std::lock_guard<oatpp::concurrency::SpinLock> lock(m_lock);
   std::cout << tag << ":" << message << "\n";
 }

@@ -52,7 +52,7 @@ public:
   /**
    *  Create ConnectionHandler component which uses Router component to route requests
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::server::ConnectionHandler>, serverConnectionHandler)([] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
     OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
     OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
     return oatpp::web::server::AsyncHttpConnectionHandler::createShared(router, executor);
@@ -80,7 +80,7 @@ public:
 
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, clientConnectionProvider)([this] {
 #ifdef OATPP_TEST_USE_PORT
-    return oatpp::network::client::SimpleTCPConnectionProvider::createShared("127.0.0.1", OATPP_TEST_USE_PORT);
+    return oatpp::network::tcp::client::ConnectionProvider::createShared("127.0.0.1", OATPP_TEST_USE_PORT);
 #else
     OATPP_COMPONENT(std::shared_ptr<oatpp::network::virtual_::Interface>, interface);
     return oatpp::network::virtual_::client::ConnectionProvider::createShared(interface);

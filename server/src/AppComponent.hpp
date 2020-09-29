@@ -15,7 +15,7 @@
 
 #include "oatpp/web/server/AsyncHttpConnectionHandler.hpp"
 #include "oatpp/web/server/HttpRouter.hpp"
-#include "oatpp/network/server/SimpleTCPConnectionProvider.hpp"
+#include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 
@@ -44,11 +44,11 @@ public:
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>, connectionProviders)([this] {
     auto providers = std::make_shared<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>();
-    v_int32 basePort = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--bp", "8000"));
-    v_int32 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--pc", "100"));
-    for(v_int32 i = 0; i < portsCount; i++) {
+    v_uint16 basePort = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--bp", "8000"));
+    v_uint16 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--pc", "100"));
+    for(v_uint16 i = 0; i < portsCount; i++) {
       OATPP_LOGD("AppComponent", "Connection Provider for port: %d", basePort + i);
-      auto provider = oatpp::network::server::SimpleTCPConnectionProvider::createShared(basePort + i);
+      auto provider = oatpp::network::tcp::server::ConnectionProvider::createShared({"localhost", (v_uint16)(basePort + i)});
       providers->push_back(provider);
     }
     return providers;
@@ -64,7 +64,7 @@ public:
   /**
    *  Create HTTP ConnectionHandler component which uses Router component to route requests
    */
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::server::ConnectionHandler>, serverConnectionHandler)([] {
+  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
     OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
     return oatpp::web::server::AsyncHttpConnectionHandler::createShared(router, 4);
   }());

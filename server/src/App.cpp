@@ -12,7 +12,7 @@
 #include "./Logger.hpp"
 #include "./Meter.hpp"
 
-#include "oatpp/network/server/Server.hpp"
+#include "oatpp/network/Server.hpp"
 
 #include <iostream>
 #include <thread>
@@ -66,8 +66,8 @@ void run(const oatpp::base::CommandLineArguments& args) {
 
   for(auto& provider : *connectionProviders) {
     threads.push_back(std::thread([provider]{
-      OATPP_COMPONENT(std::shared_ptr<oatpp::network::server::ConnectionHandler>, handler);
-      oatpp::network::server::Server server(provider, handler);
+      OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, handler);
+      oatpp::network::Server server(provider, handler);
       server.run();
     }));
   }

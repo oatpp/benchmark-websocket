@@ -48,7 +48,7 @@ public:
     v_uint16 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--pc", "100"));
     for(v_uint16 i = 0; i < portsCount; i++) {
       OATPP_LOGD("AppComponent", "Connection Provider for port: %d", basePort + i);
-      auto provider = oatpp::network::tcp::server::ConnectionProvider::createShared({"localhost", (v_uint16)(basePort + i)});
+      auto provider = oatpp::network::tcp::server::ConnectionProvider::createShared({"0.0.0.0", (v_uint16)(basePort + i)});
       providers->push_back(provider);
     }
     return providers;

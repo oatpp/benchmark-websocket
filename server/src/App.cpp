@@ -52,14 +52,11 @@ void run(const oatpp::base::CommandLineArguments& args) {
   AppComponent components(args); // Create scope Environment components
   
   /* create ApiControllers and add endpoints to router */
-  
   auto router = components.httpRouter.getObject();
-  
-  auto myController = MyController::createShared();
-  myController->addEndpointsToRouter(router);
+
+  router->addController(MyController::createShared());
   
   /* create servers */
-
   OATPP_COMPONENT(std::shared_ptr<std::list<std::shared_ptr<oatpp::network::ServerConnectionProvider>>>, connectionProviders);
 
   std::list<std::thread> threads;

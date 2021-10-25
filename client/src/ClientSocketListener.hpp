@@ -150,7 +150,7 @@ public:
   }
 
 
-  Action onConnected(const std::shared_ptr<oatpp::data::stream::IOStream>& connection) {
+  Action onConnected(const oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream>& connection) {
     ++ SOCKETS;
     m_socket = oatpp::websocket::AsyncWebSocket::createShared(connection, true /* maskOutgoingMessages for clients always true */);
 

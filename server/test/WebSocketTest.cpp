@@ -151,7 +151,7 @@ public:
     return connector->connectAsync("ws").callbackTo(&ClientCoroutine::onConnected);
   }
 
-  Action onConnected(const std::shared_ptr<oatpp::data::stream::IOStream>& connection) {
+  Action onConnected(const oatpp::provider::ResourceHandle<oatpp::data::stream::IOStream>& connection) {
     socket = oatpp::websocket::AsyncWebSocket::createShared(connection, true);
     socket->setListener(std::make_shared<ClientSocketListener>());
     executor->execute<ClientSenderCoroutine>(socket);

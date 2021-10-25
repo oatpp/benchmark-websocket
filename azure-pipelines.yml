@@ -1,9 +1,9 @@
 jobs:
-  - job: ubuntu_16_04
-    displayName: 'Build - Ubuntu 16.04'
+  - job: ubuntu_20_04
+    displayName: 'Build - Ubuntu 20.04'
     continueOnError: false
     pool:
-      vmImage: 'Ubuntu 16.04'
+      vmImage: 'ubuntu-20.04'
     container:
       image: lganzzzo/ubuntu-cmake:latest
     workspace:

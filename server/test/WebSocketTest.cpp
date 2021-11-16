@@ -96,7 +96,7 @@ public:
 
 class ClientSocketListener : public oatpp::websocket::AsyncWebSocket::Listener{
 private:
-  oatpp::data::stream::ChunkedBuffer m_messageBuffer;
+  oatpp::data::stream::BufferOutputStream m_messageBuffer;
 public:
 
   CoroutineStarter onPing(const std::shared_ptr<AsyncWebSocket>& socket, const oatpp::String& message) override {
@@ -114,7 +114,7 @@ public:
   CoroutineStarter readMessage(const std::shared_ptr<AsyncWebSocket>& socket, v_uint8 opcode, p_char8 data, oatpp::v_io_size size) override {
     if(size == 0) {
       auto wholeMessage = m_messageBuffer.toString();
-      m_messageBuffer.clear();
+      m_messageBuffer.setCurrentPosition(0);
       OATPP_LOGD("client", "received %s", wholeMessage->c_str());
     } else if(size > 0) {
       m_messageBuffer.writeSimple(data, size);

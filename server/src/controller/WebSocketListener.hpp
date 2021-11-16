@@ -27,7 +27,7 @@ private:
   /**
    * Buffer for messages. Needed for multi-frame messages.
    */
-  oatpp::data::stream::ChunkedBuffer m_messageBuffer;
+  oatpp::data::stream::BufferOutputStream m_messageBuffer;
 public:
 
   /**
@@ -62,7 +62,7 @@ public:
     if(size == 0) { // message transfer finished
 
       auto wholeMessage = m_messageBuffer.toString();
-      m_messageBuffer.clear();
+      m_messageBuffer.setCurrentPosition(0);
       ++ MESSAGES;
 
       /* Send message in reply */

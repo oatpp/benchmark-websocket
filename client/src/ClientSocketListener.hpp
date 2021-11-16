@@ -33,7 +33,7 @@ private:
   /**
    * Buffer for messages. Needed for multi-frame messages.
    */
-  oatpp::data::stream::ChunkedBuffer m_messageBuffer;
+  oatpp::data::stream::BufferOutputStream m_messageBuffer;
 public:
 
   /**
@@ -69,7 +69,7 @@ public:
 
       auto wholeMessage = m_messageBuffer.toString();
       // TODO do something with message
-      m_messageBuffer.clear();
+      m_messageBuffer.setCurrentPosition(0);
       ++ MESSAGES;
 
     } else if(size > 0) { // message frame received

@@ -62,11 +62,9 @@ public:
    *  Create ObjectMapper component to serialize/deserialize DTOs in Contoller's API
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)([] {
-    auto serializerConfig = oatpp::parser::json::mapping::Serializer::Config::createShared();
-    auto deserializerConfig = oatpp::parser::json::mapping::Deserializer::Config::createShared();
-    deserializerConfig->allowUnknownFields = false;
-    auto objectMapper = oatpp::parser::json::mapping::ObjectMapper::createShared(serializerConfig, deserializerConfig);
-    return objectMapper;
+    auto mapper = std::make_shared<oatpp::json::ObjectMapper>();
+    mapper->deserializerConfig().mapper.allowUnknownFields = false;
+    return mapper;
   }());
 
   /**
@@ -115,7 +113,7 @@ public:
     if(size == 0) {
       auto wholeMessage = m_messageBuffer.toString();
       m_messageBuffer.setCurrentPosition(0);
-      OATPP_LOGD("client", "received %s", wholeMessage->c_str());
+      OATPP_LOGd("client", "received {}", wholeMessage);
     } else if(size > 0) {
       m_messageBuffer.writeSimple(data, size);
     }
@@ -183,6 +181,6 @@ void WebSocketTest::onRun() {
 //
 //  }, std::chrono::minutes(10));
 
-OATPP_LOGD(TAG, "TODO - write tests");
+OATPP_LOGd(TAG, "TODO - write tests");
 
 }

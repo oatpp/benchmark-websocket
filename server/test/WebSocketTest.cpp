@@ -18,7 +18,7 @@
 
 #include "oatpp-test/web/ClientServerTestRunner.hpp"
 
-#include "oatpp/core/macro/component.hpp"
+#include "oatpp/macro/component.hpp"
 
 namespace {
 

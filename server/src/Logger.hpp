@@ -9,15 +9,15 @@
 #ifndef Logger_hpp
 #define Logger_hpp
 
-#include "oatpp/core/concurrency/SpinLock.hpp"
-#include "oatpp/core/base/Environment.hpp"
+#include "oatpp/concurrency/SpinLock.hpp"
+#include "oatpp/Environment.hpp"
 
 /**
  *  Environment logger.
  *  All logs from OATPP_LOGV(...), OATPP_LOGD(...), OATPP_LOGE(...) go here
  *  You may ignore or redirect them here
  */
-class Logger : public oatpp::base::Logger {
+class Logger : public oatpp::Logger {
 private:
   oatpp::concurrency::SpinLock m_lock;
 public:

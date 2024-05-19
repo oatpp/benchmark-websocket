@@ -19,23 +19,23 @@
  */
 void printStats() {
 
-  OATPP_LOGD("Status", "\n\n\n\n\n");
+  OATPP_LOGd("Status", "\n\n\n\n\n");
 
   Meter framesMeter(60 * 2);
   Meter messagesMeter(60 * 2);
 
   while(true) {
 
-    v_int64 tickCount = oatpp::base::Environment::getMicroTickCount();
+    v_int64 tickCount = oatpp::Environment::getMicroTickCount();
     framesMeter.addPoint(tickCount, ClientSocketListener::FRAMES.load());
     messagesMeter.addPoint(tickCount, ClientSocketListener::MESSAGES.load());
 
-    OATPP_LOGD("\33[2K\r\033[A\033[A\033[A\033[A\033[A"
-               "SOCKETS", "          %d              ", ClientCoroutine::SOCKETS.load());
-    OATPP_LOGD("FRAMES_TOTAL", "     %d              ", ClientSocketListener::FRAMES.load());
-    OATPP_LOGD("MESSAGES_TOTAL", "   %d              ", ClientSocketListener::MESSAGES.load());
-    OATPP_LOGD("FRAMES_PER_MIN", "   %f              ", framesMeter.perMinute());
-    OATPP_LOGD("MESSAGES_PER_MIN", " %f              ", messagesMeter.perMinute());
+    OATPP_LOGd("\33[2K\r\033[A\033[A\033[A\033[A\033[A"
+               "SOCKETS", "          {}              ", ClientCoroutine::SOCKETS.load());
+    OATPP_LOGd("FRAMES_TOTAL", "     {}              ", ClientSocketListener::FRAMES.load());
+    OATPP_LOGd("MESSAGES_TOTAL", "   {}              ", ClientSocketListener::MESSAGES.load());
+    OATPP_LOGd("FRAMES_PER_MIN", "   {}              ", framesMeter.perMinute());
+    OATPP_LOGd("MESSAGES_PER_MIN", " {}              ", messagesMeter.perMinute());
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
 
@@ -51,16 +51,16 @@ void run(const oatpp::base::CommandLineArguments& args) {
   /* Get AsyncExecutor */
   OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
 
-  v_int32 maxSocketsNumber = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-max", "1000"));
-  v_int32 maxSocketsPerPort = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--socks-port", "10000"));
-  v_int32 sleepIteration = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--si", "5"));
-  v_int32 sleepFor = oatpp::utils::conversion::strToInt32(args.getNamedArgumentValue("--sf", "5"));
+  v_int32 maxSocketsNumber = oatpp::utils::Conversion::strToInt32(args.getNamedArgumentValue("--socks-max", "1000"));
+  v_int32 maxSocketsPerPort = oatpp::utils::Conversion::strToInt32(args.getNamedArgumentValue("--socks-port", "10000"));
+  v_int32 sleepIteration = oatpp::utils::Conversion::strToInt32(args.getNamedArgumentValue("--si", "5"));
+  v_int32 sleepFor = oatpp::utils::Conversion::strToInt32(args.getNamedArgumentValue("--sf", "5"));
 
   v_int32 clientsCounter = 0;
 
   for(auto& provider : *connectionProviders) {
 
-    OATPP_LOGD("Client", "add clients for port %s", provider->getProperty("port").toString()->c_str());
+    OATPP_LOGd("Client", "add clients for port {}", provider->getProperty("port").toString());
 
     auto connector = oatpp::websocket::Connector::createShared(provider);
 
@@ -84,7 +84,7 @@ void run(const oatpp::base::CommandLineArguments& args) {
 
   }
 
-  OATPP_LOGD("Client", "Waiting clients to connect...");
+  OATPP_LOGd("Client", "Waiting clients to connect...");
 
   std::thread statThread([]{
     printStats();
@@ -121,17 +121,17 @@ void run(const oatpp::base::CommandLineArguments& args) {
  */
 int main(int argc, const char * argv[]) {
 
-  oatpp::base::Environment::init();
+  oatpp::Environment::init();
 
   run(oatpp::base::CommandLineArguments(argc, argv));
   
   /* Print how much objects were created during app running, and what have left-probably leaked */
   /* Disable object counting for release builds using '-D OATPP_DISABLE_ENV_OBJECT_COUNTERS' flag for better performance */
   std::cout << "\nEnvironment:\n";
-  std::cout << "objectsCount = " << oatpp::base::Environment::getObjectsCount() << "\n";
-  std::cout << "objectsCreated = " << oatpp::base::Environment::getObjectsCreated() << "\n\n";
+  std::cout << "objectsCount = " << oatpp::Environment::getObjectsCount() << "\n";
+  std::cout << "objectsCreated = " << oatpp::Environment::getObjectsCreated() << "\n\n";
   
-  oatpp::base::Environment::destroy();
+  oatpp::Environment::destroy();
   
   return 0;
 }

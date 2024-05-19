@@ -22,25 +22,25 @@
  */
 void printStats() {
 
-  OATPP_LOGD("Status", "\n\n\n\n\n");
+  OATPP_LOGd("Status", "\n\n\n\n\n");
 
-  v_int64 lastTickCount = oatpp::base::Environment::getMicroTickCount();
+  v_int64 lastTickCount = oatpp::Environment::getMicroTickCount();
 
   Meter framesMeter(60 * 2);
   Meter messagesMeter(60 * 2);
 
   while(true) {
 
-    v_int64 tickCount = oatpp::base::Environment::getMicroTickCount();
+    v_int64 tickCount = oatpp::Environment::getMicroTickCount();
     framesMeter.addPoint(tickCount, WebSocketListener::FRAMES.load());
     messagesMeter.addPoint(tickCount, WebSocketListener::MESSAGES.load());
 
-    OATPP_LOGD("\33[2K\r\033[A\033[A\033[A\033[A\033[A"
-               "SOCKETS", "          %d              ", WebSocketInstanceListener::SOCKETS.load());
-    OATPP_LOGD("FRAMES_TOTAL", "     %d              ", WebSocketListener::FRAMES.load());
-    OATPP_LOGD("MESSAGES_TOTAL", "   %d              ", WebSocketListener::MESSAGES.load());
-    OATPP_LOGD("FRAMES_PER_MIN", "   %f              ", framesMeter.perMinute());
-    OATPP_LOGD("MESSAGES_PER_MIN", " %f              ", messagesMeter.perMinute());
+    OATPP_LOGd("\33[2K\r\033[A\033[A\033[A\033[A\033[A"
+               "SOCKETS", "          {}              ", WebSocketInstanceListener::SOCKETS.load());
+    OATPP_LOGd("FRAMES_TOTAL", "     {}              ", WebSocketListener::FRAMES.load());
+    OATPP_LOGd("MESSAGES_TOTAL", "   {}              ", WebSocketListener::MESSAGES.load());
+    OATPP_LOGd("FRAMES_PER_MIN", "   {}              ", framesMeter.perMinute());
+    OATPP_LOGd("MESSAGES_PER_MIN", " {}              ", messagesMeter.perMinute());
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
   }
@@ -86,17 +86,17 @@ void run(const oatpp::base::CommandLineArguments& args) {
  */
 int main(int argc, const char * argv[]) {
 
-  oatpp::base::Environment::init();
+  oatpp::Environment::init();
 
   run(oatpp::base::CommandLineArguments(argc, argv));
 
   /* Print how much objects were created during app running, and what have left-probably leaked */
   /* Disable object counting for release builds using '-D OATPP_DISABLE_ENV_OBJECT_COUNTERS' flag for better performance */
   std::cout << "\nEnvironment:\n";
-  std::cout << "objectsCount = " << oatpp::base::Environment::getObjectsCount() << "\n";
-  std::cout << "objectsCreated = " << oatpp::base::Environment::getObjectsCreated() << "\n\n";
+  std::cout << "objectsCount = " << oatpp::Environment::getObjectsCount() << "\n";
+  std::cout << "objectsCreated = " << oatpp::Environment::getObjectsCreated() << "\n\n";
   
-  oatpp::base::Environment::destroy();
+  oatpp::Environment::destroy();
   
   return 0;
 }

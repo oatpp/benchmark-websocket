@@ -9,18 +9,18 @@
 #ifndef AppComponent_hpp
 #define AppComponent_hpp
 
-#include "oatpp/core/async/Executor.hpp"
+#include "oatpp/async/Executor.hpp"
 
 #include "oatpp/network/tcp/client/ConnectionProvider.hpp"
-#include "oatpp/core/macro/component.hpp"
+#include "oatpp/macro/component.hpp"
 
-#include "oatpp/core/base/CommandLineArguments.hpp"
-#include "oatpp/core/utils/ConversionUtils.hpp"
+#include "oatpp/base/CommandLineArguments.hpp"
+#include "oatpp/utils/Conversion.hpp"
 
 #include <list>
 
 /**
- *  Class which creates and holds Application components and registers components in oatpp::base::Environment
+ *  Class which creates and holds Application components and registers components in oatpp::Environment
  *  Order of components initialization is from top to bottom
  */
 class AppComponent {
@@ -37,9 +37,9 @@ public:
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor)([this] {
 
-    v_int32 threadsProc = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tp", "8"));
-    v_int32 threadsIO = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tio", "2"));
-    v_int32 threadsTimer = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tt", "1"));
+    v_int32 threadsProc = oatpp::utils::Conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tp", "8"));
+    v_int32 threadsIO = oatpp::utils::Conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tio", "2"));
+    v_int32 threadsTimer = oatpp::utils::Conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--tt", "1"));
 
     return std::make_shared<oatpp::async::Executor>(threadsProc, threadsIO, threadsTimer);
 
@@ -53,8 +53,8 @@ public:
     auto providers = std::make_shared<std::list<std::shared_ptr<oatpp::network::ClientConnectionProvider>>>();
 
     const char* host = m_cmdArgs.getNamedArgumentValue("-h", "127.0.0.1");
-    v_uint16 basePort = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--bp", "8000"));
-    v_uint16 portsCount = oatpp::utils::conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--pc", "100"));
+    v_uint16 basePort = oatpp::utils::Conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--bp", "8000"));
+    v_uint16 portsCount = oatpp::utils::Conversion::strToInt32(m_cmdArgs.getNamedArgumentValue("--pc", "100"));
 
     for(v_uint16 i = 0; i < portsCount; i++) {
       auto provider = oatpp::network::tcp::client::ConnectionProvider::createShared({host, (v_uint16)(basePort + i)});

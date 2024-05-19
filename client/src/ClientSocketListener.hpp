@@ -5,12 +5,13 @@
 #ifndef ClientSocketListener_hpp
 #define ClientSocketListener_hpp
 
-#include "oatpp/core/async/Executor.hpp"
+#include "oatpp/async/Executor.hpp"
 
 #include "oatpp-websocket/Connector.hpp"
 #include "oatpp-websocket/AsyncWebSocket.hpp"
 
-#include "oatpp/core/macro/component.hpp"
+#include "oatpp/macro/component.hpp"
+#include "oatpp/base/Log.hpp"
 
 #include <mutex>
 
@@ -175,7 +176,7 @@ public:
 
   Action handleError(Error* error) override {
     if(error) {
-      OATPP_LOGD("ClientCoroutine", "Error. %s", error->what());
+      OATPP_LOGd("ClientCoroutine", "Error. {}", error->what());
     }
 
     OATPP_ASSERT(false && "handleError - any error in WebSocket communication is considered to be fatal in this benchmark");
